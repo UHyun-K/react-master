@@ -6,6 +6,7 @@ import Price from "./Price";
 import Chart from "./Chart";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
     padding: 0 20px;
@@ -168,15 +169,16 @@ function Coin() {
     const loading = infoLoading || tickersLoading;
     return (
         <Container>
-            <Header>
-                <Title>
+            <Helmet>
+                <title>
                     {state?.name
                         ? state.name
                         : loading
                         ? "Loading..."
                         : infoData?.name}
-                </Title>
-            </Header>
+                </title>
+            </Helmet>
+
             {loading ? (
                 <Loader>"Loading.."</Loader>
             ) : (
@@ -191,8 +193,8 @@ function Coin() {
                             <span>{infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
-                            <span>Open Source:</span>
-                            <span>{infoData?.open_source ? "Yes" : "No"}</span>
+                            <span>Price:</span>
+                            <span>${tickersData?.quotes.USD.price}</span>
                         </OverviewItem>
                     </Overview>
                     <Description>{infoData?.description}</Description>
