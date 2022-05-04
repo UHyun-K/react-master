@@ -38,6 +38,7 @@ const Overview = styled.div`
     padding: 10px 20px;
     border-radius: 10px;
 `;
+
 const OverviewItem = styled.div`
     display: flex;
     flex-direction: column;
@@ -72,6 +73,9 @@ const Tab = styled.span<{ isActive: boolean }>`
     a {
         display: block;
     }
+`;
+const Prev = styled.span`
+    font-size: 50px;
 `;
 
 interface InfoData {
@@ -183,6 +187,9 @@ function Coin() {
                 <Loader>"Loading.."</Loader>
             ) : (
                 <>
+                    <Link to="/">
+                        <Prev> PREV </Prev>
+                    </Link>
                     <Overview>
                         <OverviewItem>
                             <span>Rank:</span>
@@ -221,7 +228,10 @@ function Coin() {
                             path="chart"
                             element={<Chart coinId={coinId!} />}
                         />
-                        <Route path="price" element={<Price />} />
+                        <Route
+                            path="price"
+                            element={<Price coinId={coinId!} />}
+                        />
                     </Routes>
                 </>
             )}

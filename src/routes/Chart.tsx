@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { Helmet } from "react-helmet";
 import { fetchCoinHistroy } from "../api";
 import ApexChart from "react-apexcharts";
 
@@ -25,34 +24,28 @@ function Chart({ coinId }: ChartProps) {
             refetchInterval: 5000,
         }
     );
+    const mappedOhlcvData = data?.map((data: IHistorical) => ({
+        x: data.time_open,
+        y: [
+            data.open.toFixed(2),
+            data.high.toFixed(2),
+            data.low.toFixed(2),
+            data.close.toFixed(2),
+        ],
+    }));
     return (
         <div>
             {isLoading ? (
                 "Loading chart.."
             ) : (
                 <ApexChart
-                    type="line"
-                    series={[
-                        {
-                            name: "Price",
-                            data: data?.map((price) => price.close) as number[],
-                        },
-                    ]}
+                    type="candlestick"
+                    series={[{ data: mappedOhlcvData }] as unknown as number[]}
                     options={{
                         theme: {
                             mode: "dark",
                         },
-                        chart: {
-                            height: 500,
-                            width: 500,
-                            toolbar: {
-                                show: false,
-                            },
-                        },
-                        stroke: {
-                            curve: "smooth",
-                            width: 5,
-                        },
+
                         yaxis: {
                             show: false,
                         },
@@ -62,14 +55,6 @@ function Chart({ coinId }: ChartProps) {
                             labels: { show: false },
                             type: "datetime",
                             categories: data?.map((price) => price.time_close),
-                        },
-                        fill: {
-                            type: "gradient",
-                            gradient: {
-                                gradientToColors: ["blue"],
-                                stops: [0, 100],
-                            },
-                            colors: ["red"],
                         },
                         tooltip: {
                             y: {
